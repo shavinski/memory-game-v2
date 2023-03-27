@@ -40,23 +40,23 @@ function shuffle(items) {
 
 function createCards(colors) {
   const gameBoard = document.getElementById("game");
-
+  
   for (let color of colors) {
-    // missing code here ...
     const card = document.createElement('div');
+    // missing code here ...
     card.classList.add(`${color}`);
     gameBoard.append(card);
 
-    card.addEventListener('click', handleCardClick());
-
+    (card.addEventListener('click', handleCardClick));
   };
 };
+
 
 /** Flip a card face-up. */
 
 function flipCard(card) {
   // ... you need to write this ...
-  if(card)
+  card.style.backgroundColor = `${card.className}`
 
 }
 
@@ -64,10 +64,13 @@ function flipCard(card) {
 
 function unFlipCard(card) {
   // ... you need to write this ...
+  card.removeAttribute('backgroundColor')
 }
 
 /** Handle clicking on a card: this could be first-card or second-card. */
 
+
 function handleCardClick(evt) {
-  // ... you need to write this ...
-}
+  flipCard(evt.target)
+
+};
