@@ -53,24 +53,62 @@ function createCards(colors) {
 
 
 /** Flip a card face-up. */
+let flippedCard = false;
+let firstCard;
+let secondCard;
+
 
 function flipCard(card) {
   // ... you need to write this ...
-  card.style.backgroundColor = `${card.className}`
-
+  card.target.style.backgroundColor = `${card.target.className}`;
+  console.log(card);
+  return card;
 }
 
 /** Flip a card face-down. */
 
 function unFlipCard(card) {
   // ... you need to write this ...
-  card.removeAttribute('backgroundColor')
+  card.target.style.backgroundColor = "white";
+  return;
+  // return card.backgroundColor = ''
 }
 
 /** Handle clicking on a card: this could be first-card or second-card. */
 
 
 function handleCardClick(evt) {
-  flipCard(evt.target)
+  
+  if (!flippedCard && firstCard === undefined) {
+    firstCard = flipCard(evt);
+    flippedCard = true;
+    console.log({firstCard, secondCard});
+  } else if (flippedCard === true) {
+    secondCard = flipCard(evt);
+    flippedCard = false;
+    console.log({firstCard, secondCard});
+  } 
+  
+  if (firstCard.target.className === secondCard.target.className) {
+    console.log('match');
 
+      firstCard.target.removeEventListener('click', handleCardClick);
+      secondCard.target.removeEventListener('click', handleCardClick);
+
+      firstCard = undefined;
+      secondCard = undefined;
+    
+  } else if (firstCard.target.className !== secondCard.target.className){
+    console.log('no match');
+
+    setTimeout(() => {
+      
+      unFlipCard(firstCard);
+      unFlipCard(secondCard);
+      firstCard = undefined;
+      secondCard = undefined;
+    }, 1000);
+
+  };
 };
+
