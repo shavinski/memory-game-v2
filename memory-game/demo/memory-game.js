@@ -56,13 +56,12 @@ function createCards(colors) {
 let flippedCard = false;
 let firstCard;
 let secondCard;
+let inProcessOfGuess = false;
 
 
 function flipCard(card) {
   // ... you need to write this ...
   card.target.style.backgroundColor = `${card.target.className}`;
-  console.log(card);
-  return card;
 }
 
 /** Flip a card face-down. */
@@ -70,45 +69,50 @@ function flipCard(card) {
 function unFlipCard(card) {
   // ... you need to write this ...
   card.target.style.backgroundColor = "white";
-  return;
-  // return card.backgroundColor = ''
 }
 
 /** Handle clicking on a card: this could be first-card or second-card. */
 
 
 function handleCardClick(evt) {
-  
-  if (!flippedCard && firstCard === undefined) {
-    firstCard = flipCard(evt);
-    flippedCard = true;
-    console.log({firstCard, secondCard});
-  } else if (flippedCard === true) {
-    secondCard = flipCard(evt);
-    flippedCard = false;
-    console.log({firstCard, secondCard});
-  } 
-  
-  if (firstCard.target.className === secondCard.target.className) {
-    console.log('match');
 
+  if(inProcessOfGuess) {
+    return;
+  };
+
+  flipCard(evt);
+  
+  if (!flippedCard) {
+    firstCard = evt;
+    flippedCard = true;
+  } else {
+    secondCard = evt;
+    // doesn't allow the same square to be clicked an counted as two
+    if (secondCard.target === firstCard.target) {
+      secondCard = undefined;
+      return;
+    }
+    flippedCard = false;
+    inProcessOfGuess = true;
+  };
+
+  if (firstCard.target.className === secondCard.target.className) {
+    setTimeout(() => {
       firstCard.target.removeEventListener('click', handleCardClick);
       secondCard.target.removeEventListener('click', handleCardClick);
-
       firstCard = undefined;
       secondCard = undefined;
-    
-  } else if (firstCard.target.className !== secondCard.target.className){
-    console.log('no match');
-
+      inProcessOfGuess = false;
+    }, FOUND_MATCH_WAIT_MSECS);
+  } else {
     setTimeout(() => {
-      
       unFlipCard(firstCard);
       unFlipCard(secondCard);
       firstCard = undefined;
       secondCard = undefined;
+      inProcessOfGuess = false;
     }, 1000);
-
+    
   };
 };
 
