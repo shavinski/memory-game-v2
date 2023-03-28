@@ -96,6 +96,9 @@ function handleCardClick(evt) {
     inProcessOfGuess = true;
   };
 
+// added this if statement in order to avoid error in console of accessing second.target.className to early
+// would get error of second.target.className is undefined everytime i click first square 
+if (secondCard !== undefined) {
   if (firstCard.target.className === secondCard.target.className) {
     setTimeout(() => {
       firstCard.target.removeEventListener('click', handleCardClick);
@@ -112,7 +115,7 @@ function handleCardClick(evt) {
       secondCard = undefined;
       inProcessOfGuess = false;
     }, 1000);
-    
   };
+ };
 };
 
